@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
+//import { getRatingGraph, getSubmissions } from "../context/userSlice";
+import { BASE_URL, USER_STATUS } from '../utils/api'; 
 const Info = () => {
   const [searchParams] = useSearchParams();
   const username = searchParams.get('username');
@@ -12,7 +13,8 @@ const Info = () => {
       try {
         // Call APIs and fetch data here
         const fetchedData = await Promise.all([
-          // Fetch from Codeforces, LeetCode, and CodeChef APIs
+          //`https://codeforces.com/api/user.info?handles=${username};Fefer_Ivan&checkHistoricHandles=false`
+            //USER_STATUS({username})
         ]);
         setData(fetchedData);
       } catch (error) {
