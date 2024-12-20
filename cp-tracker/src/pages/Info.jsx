@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-//import { getRatingGraph, getSubmissions } from "../context/userSlice";
-import { BASE_URL, USER_STATUS } from '../utils/api'; 
+
 const Info = () => {
   const [searchParams] = useSearchParams();
   const username = searchParams.get('username');
@@ -11,20 +10,35 @@ const Info = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Call APIs and fetch data here
-        const fetchedData = await Promise.all([
-          //`https://codeforces.com/api/user.info?handles=${username};Fefer_Ivan&checkHistoricHandles=false`
-            //USER_STATUS({username})
-        ]);
-        setData(fetchedData);
+        setLoading(true);
+        const response = await fetch(
+          `https://codeforces.com/api/user.info?handles=${username}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.status !== 'OK') {
+          throw new Error(`API response status: ${result.status}`);
+        }
+
+        setData(result.result);
+
+        const ratings = result.result.map((user) => user.rating);
+        
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    if (username) {
+      fetchData();
+    }
   }, [username]);
 
   if (loading) {
@@ -35,14 +49,31 @@ const Info = () => {
     );
   }
 
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-lg text-gray-600">No data found for this username.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">
+      <h3 className="text-3xl font-bold text-gray-800 mb-4">
         Data for <span className="text-blue-500">{username}</span>
-      </h1>
+      </h3>
       <div className="bg-white shadow-md rounded-lg p-6">
         <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">
-          {JSON.stringify(data, null, 2)}
+          {/* {JSON.stringify(data, null, 2)} */}
+          {data.map((user) => (
+            <div key={user.handle}>
+              <h4 className="text-xl font-bold text-gray-800 mb-2">{user.handle}</h4>
+              <p className="text-gray-600 mb-2">Rating: {user.rating}</p>
+              <p className="text-gray-600 mb-2">Max Rating: {user.maxRating}</p>
+              <p className="text-gray-600 mb-2">Rank: {user.rank}</p>
+              <p className="text-gray-600 mb-2">Max Rank: {user.maxRank}</p>
+            </div>
+          ))}
         </pre>
       </div>
     </div>
