@@ -27,6 +27,10 @@ const Home = () => {
     document.documentElement.classList.toggle('dark');
   };
 
+
+  const handleClick = () => {
+    navigate("/contest");
+  };
   return (
     <div className={`flex flex-col items-center justify-center min-h-screen transition-colors ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}>
       <div className="absolute top-4 left-4 flex items-center">
@@ -79,6 +83,9 @@ const Home = () => {
           Search
         </button>
       </form>
+      <button onClick={handleClick} style={{ padding: "10px 20px", fontSize: "16px", marginTop: "20px" }} className="bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
+        create contest
+      </button>
     </div>
   );
 };
