@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 const Contest = () => {
   const [rating, setRating] = useState("");
   const [problem, setProblem] = useState(null);
   const [problems, setProblems] = useState([]);
-
+  const Navigate = useNavigate();
   useEffect(() => {
     fetch("https://codeforces.com/api/problemset.problems")
       .then((res) => res.json())
@@ -41,6 +41,12 @@ const Contest = () => {
       <button onClick={handleGenerate} style={{ padding: "5px 10px" }} className="bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
         Get Problem
       </button>
+      <br />
+      <button
+        onClick={() => Navigate("/contestpage")}
+        style={{ padding: "10px 20px", fontSize: "16px", marginTop: "20px" }}
+        className="bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
+      >create contest</button>
       {problem && (
         <div style={{ marginTop: "20px" }} className="text-center">
           <h3>Random Problem:</h3>
@@ -56,6 +62,7 @@ const Contest = () => {
         </div>
       )}
     </div>
+    
   );
 };
 
