@@ -24,12 +24,12 @@ const ContestPage = () => {
 
       if (data.status === "OK") {
         const filteredProblems = data.result.problems.filter(
-          (problem) => problem.rating === parseInt(rating)
+          (problem) => ( Math.abs(problem.rating - parseInt(rating)) <= 300 )
         );
 
         if (filteredProblems.length < 5) {
           alert(
-            `Not enough problems with rating ${rating}. Found ${filteredProblems.length}.`
+            `Not enough problems with rating in range ${rating}. Found ${filteredProblems.length}.`
           );
           setLoading(false);
           return;

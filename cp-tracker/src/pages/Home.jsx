@@ -29,10 +29,14 @@ const Home = () => {
 
 
   const handleClick = () => {
-    navigate("/contest");
+    if(username) {
+      navigate("/contest");
+    }else {
+      alert('Enter a handle first!')
+    }
   };
   return (
-    <div className={`flex flex-col items-center justify-center min-h-screen transition-colors ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}>
+    <div className={`flex flex-col items-center justify-center min-h-screen transition-colors ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-300 text-gray-900'}`}>
       <div className="absolute top-4 left-4 flex items-center">
         <img src="./images/aef6924ac82249d5.jpg" alt="Logo" className="w-12 h-12" />
       </div>
